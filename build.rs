@@ -116,18 +116,22 @@ fn main() -> Result<(), Box<dyn Error>> {
     let out_dir = path::PathBuf::from(env::var("OUT_DIR").unwrap());
 
     // Copy xed directory
-    copy_dir_if_needed("xed", &{
+    let path = {
         let mut x = out_dir.clone();
         x.push("xed");
         x
-    })?;
+    };
+    fs::remove_dir_all(&path);
+    copy_dir_if_needed("xed", &path)?;
 
     // Copy mbuild directory
-    copy_dir_if_needed("mbuild", &{
+    let path = {
         let mut x = out_dir.clone();
         x.push("mbuild");
         x
-    })?;
+    };
+    fs::remove_dir_all(&path);
+    copy_dir_if_needed("mbuild", &path)?;
 
     // Create install directory
     let install_dir = {
